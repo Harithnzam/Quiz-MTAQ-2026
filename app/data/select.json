@@ -1,0 +1,96 @@
+{
+ "rounds": {
+  "1": [
+   {
+    "prompt": "Pilih SEMUA surah yang termasuk dalam skop Round 1 (Juzu' 28).",
+    "correct": ["Surah As-Saff", "Surah Al-Jumu'ah", "Surah At-Talaq"],
+    "distractors": ["Surah Al-Baqarah", "Surah Yasin", "Surah Al-Mulk"],
+    "justification": "Skop Round 1: As-Saff (61), Al-Jumu'ah (62), At-Talaq (65)."
+   },
+   {
+    "prompt": "Pilih SEMUA tiga tugas Rasul terhadap kaum ummi (Al-Jumu'ah).",
+    "correct": ["Membacakan ayat Allah", "Menyucikan jiwa", "Mengajarkan Kitab dan hikmah"],
+    "distractors": ["Mengumpul harta", "Membina kota", "Menyusun keturunan"],
+    "justification": "Al-Jumu'ah menyebut tiga tugas: baca ayat, sucikan jiwa, ajar Kitab & hikmah."
+   },
+   {
+    "prompt": "Pilih SEMUA unsur 'perniagaan yang menyelamatkan' dalam Surah As-Saff.",
+    "correct": ["Iman kepada Allah dan Rasul", "Jihad dengan harta", "Jihad dengan jiwa"],
+    "distractors": ["Mengumpul kekayaan", "Meninggalkan pekerjaan", "Berpindah tempat tinggal"],
+    "justification": "Perniagaan yang menyelamatkan: iman + jihad dengan harta dan jiwa."
+   }
+  ],
+  "2": [
+   {
+    "prompt": "Pilih SEMUA lima rukun akad nikah.",
+    "correct": ["Sighah (ijab & kabul)", "Isteri", "Suami", "Wali", "Dua saksi adil"],
+    "distractors": ["Walimah", "Mahar", "Khutbah nikah"],
+    "justification": "5 rukun: sighah, isteri, suami, wali, dua saksi. Walimah/mahar bukan rukun."
+   },
+   {
+    "prompt": "Pilih SEMUA tiga sebab keharaman nikah yang KEKAL.",
+    "correct": ["Nasab (keturunan)", "Persemendaan (mushaharah)", "Penyusuan (radha'ah)"],
+    "distractors": ["Menghimpun dua saudara perempuan", "Perbezaan bangsa", "Perbezaan pekerjaan"],
+    "justification": "Keharaman kekal: nasab, mushaharah, radha'ah. Himpun dua saudara = sementara."
+   },
+   {
+    "prompt": "Pilih SEMUA aspek keadilan yang WAJIB dalam poligami.",
+    "correct": ["Nafkah", "Tempat tinggal", "Giliran bermalam", "Pergaulan baik"],
+    "distractors": ["Kesamaan cinta hati", "Kesamaan rupa isteri"],
+    "justification": "Keadilan praktikal: nafkah, tempat tinggal, giliran, layanan. Cinta hati di luar kuasa."
+   }
+  ],
+  "3": [
+   {
+    "prompt": "Pilih SEMUA lima Rukun Islam.",
+    "correct": ["Syahadah", "Solat", "Zakat", "Puasa Ramadan", "Haji"],
+    "distractors": ["Jihad", "Berbakti kepada ibu bapa", "Menuntut ilmu"],
+    "justification": "Rukun Islam: syahadah, solat, zakat, puasa, haji."
+   },
+   {
+    "prompt": "Pilih SEMUA enam asal golongan bidaah yang disebut.",
+    "correct": ["Haruriah", "Qadariah", "Jahmiah", "Murjiah", "Rafidhah", "Jabariah"],
+    "distractors": ["Asyairah", "Maturidiah", "Syafi'iyyah"],
+    "justification": "Enam asal: Haruriah, Qadariah, Jahmiah, Murjiah, Rafidhah, Jabariah. Asyairah/Maturidiah = ASWJ."
+   },
+   {
+    "prompt": "Pilih SEMUA tujuh sifat Allah yang disenaraikan.",
+    "correct": ["Ilmu", "Qudrat", "Hayat", "Iradat", "Sama'", "Basar", "Kalam"],
+    "distractors": ["Lapar", "Penat", "Tidur"],
+    "justification": "Tujuh sifat azali: Ilmu, Qudrat, Hayat, Iradat, Sama', Basar, Kalam."
+   },
+   {
+    "prompt": "Pilih SEMUA tiga jenis ilmu manusia.",
+    "correct": ["Badihiah", "Hissi", "Istidlali"],
+    "distractors": ["Qadim", "Majazi", "Kinayah"],
+    "justification": "Tiga jenis ilmu: badihiah, hissi (pancaindera), istidlali (dalil)."
+   }
+  ],
+  "4": [
+   {
+    "prompt": "Pilih SEMUA tujuh anggota zahir yang perlu dipelihara.",
+    "correct": ["Mata", "Telinga", "Lidah", "Perut", "Kemaluan", "Dua tangan", "Dua kaki"],
+    "distractors": ["Rambut", "Kuku", "Gigi"],
+    "justification": "Tujuh anggota: mata, telinga, lidah, perut, kemaluan, dua tangan, dua kaki."
+   },
+   {
+    "prompt": "Pilih SEMUA yang merupakan SIFAT TERPUJI hati.",
+    "correct": ["Taubat", "Sabar", "Syukur", "Ikhlas", "Tawakal"],
+    "distractors": ["Takabbur", "Riya", "Dengki", "Ujub"],
+    "justification": "Terpuji: taubat, khauf, zuhud, sabar, syukur, ikhlas, tawakal, mahabbah, rida."
+   },
+   {
+    "prompt": "Pilih SEMUA yang merupakan SIFAT TERCELA hati.",
+    "correct": ["Takabbur", "Riya", "Dengki", "Ujub", "Kikir"],
+    "distractors": ["Ikhlas", "Sabar", "Tawakal"],
+    "justification": "Tercela: gemar makan, marah, dengki, kikir, takabbur, ujub, riya, kasih dunia."
+   },
+   {
+    "prompt": "Pilih SEMUA pembahagian ruang perut yang dianjurkan.",
+    "correct": ["Sepertiga makanan", "Sepertiga minuman", "Sepertiga nafas"],
+    "distractors": ["Separuh makanan", "Suku untuk rehat"],
+    "justification": "Pembahagian: 1/3 makanan, 1/3 minuman, 1/3 nafas."
+   }
+  ]
+ }
+}
