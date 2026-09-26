@@ -1,7 +1,8 @@
 """Parse extracted QB text files into structured JSON for the study app."""
 import os, re, json, io, sys, random
 
-sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
+if __name__ == "__main__":
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
 
 SRC_DIR = "extracted"
 OUT = "app/data/quiz.json"
@@ -255,6 +256,10 @@ def build_set(fn):
     quiz, review, concept_seeds = [], [], []
 
     for name, body, kind, payload in qsections:
+        # skip empty instruction "sections" so answer-block queues stay aligned
+        payload_len = len(payload[0]) if kind == "match" else len(payload)
+        if payload_len == 0:
+            continue
         if kind == "mcq":
             for it in payload:
                 letter = grid.get(it["num"])

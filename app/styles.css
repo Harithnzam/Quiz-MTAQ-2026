@@ -280,6 +280,19 @@ main { flex: 1; width: 100%; max-width: 940px; margin: 0 auto; padding: 32px 22p
 .order-item.dragging { opacity: .5; border-color: var(--brand); }
 .order-item.over { border-color: var(--brand); }
 
+/* ---------- Bank Soalan (Q&A reader) ---------- */
+.bank-opts { display: grid; gap: 8px; margin-bottom: 4px; }
+.bank-opt { background: var(--surface-2); border: 1.5px solid var(--line); border-radius: 10px;
+  padding: 11px 15px; font-size: 14.5px; color: var(--text-2); }
+.bank-opt.correct { border-color: var(--good); background: var(--good-bg); color: var(--text); font-weight: 600; }
+.bank-opt .tick { color: var(--good); font-weight: 900; margin-left: 4px; }
+.bank-answer { margin-top: 18px; padding: 16px 18px; border-radius: 12px;
+  background: linear-gradient(160deg, rgba(45,212,191,.14), rgba(45,212,191,.05));
+  border: 1px solid rgba(45,212,191,.35); }
+.bank-answer-lbl { color: var(--brand); font-weight: 800; font-size: 11px; text-transform: uppercase;
+  letter-spacing: .8px; margin-bottom: 6px; }
+.bank-answer-text { font-size: 15px; line-height: 1.6; color: var(--text); }
+
 /* ---------- Result ---------- */
 .result { text-align: center; padding: 20px 10px 10px; animation: fade .4s var(--ease); }
 .result .ring-wrap { display: grid; place-items: center; margin: 8px auto 18px; }

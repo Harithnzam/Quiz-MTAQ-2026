@@ -66,14 +66,16 @@ function saveSettings() {
 
 /* ---------- data ---------- */
 async function loadData() {
-  const [q, n, sel] = await Promise.all([
+  const [q, n, sel, qb] = await Promise.all([
     fetch("data/quiz.json").then((r) => r.json()),
     fetch("data/notes.json").then((r) => r.json()),
     fetch("data/select.json").then((r) => r.json()).catch(() => ({ rounds: {} })),
+    fetch("data/qbank.json").then((r) => r.json()).catch(() => ({ rounds: {} })),
   ]);
   state.quiz = q;
   state.notes = n;
   state.select = sel;
+  state.qbank = qb;
 }
 
 /* pool of all playable questions for a round, by category */
@@ -92,11 +94,13 @@ function roundPool(round) {
 function setView(v) {
   state.view = v;
   state.session = null;
+  document.onkeydown = null;
   document.querySelectorAll(".tab").forEach((t) =>
     t.classList.toggle("active", t.dataset.view === v)
   );
   if (v === "home") renderHome();
   else if (v === "quiz") renderRoundPicker("quiz");
+  else if (v === "bank") renderBankPicker();
   else if (v === "notes") renderNotes();
 }
 
@@ -138,6 +142,20 @@ function renderHome() {
     )
     .join("");
 
+  const bankCards = Object.keys(state.qbank.rounds || {})
+    .sort()
+    .map((rk) => {
+      const b = state.qbank.rounds[rk];
+      const total = b.sets.reduce((a, s) => a + s.items.length, 0);
+      return `<div class="card ${ROUND_COLORS[rk]}" data-action="bankround" data-round="${rk}" tabindex="0" role="button">
+        <div class="icon">📚</div>
+        <div class="kicker">ROUND ${rk} · ${esc(b.topic)}</div>
+        <div class="ttl">Bank Soalan</div>
+        <div class="desc">${total} soalan &amp; jawapan</div>
+      </div>`;
+    })
+    .join("");
+
   render(`
     <div class="page-head">
       <div class="eyebrow">Selamat berlatih</div>
@@ -148,6 +166,10 @@ function renderHome() {
     <div class="section-title"><span class="bar"></span><h2>Kuiz mengikut Round</h2>
       <span class="hint">Pilih kategori & mod jawapan sebelum mula</span></div>
     <div class="grid">${roundCards}</div>
+
+    <div class="section-title"><span class="bar"></span><h2>Bank Soalan (Q&amp;A)</h2>
+      <span class="hint">Bacaan akhir - soalan &amp; jawapan</span></div>
+    <div class="grid">${bankCards}</div>
 
     <div class="section-title"><span class="bar"></span><h2>Nota Buku Sumber</h2>
       <span class="hint">Baca sebelum bertanding</span></div>
@@ -623,6 +645,98 @@ function renderReview(round) {
   `);
 }
 
+/* ---------- BANK SOALAN (full Q&A reader) ---------- */
+function renderBankPicker() {
+  const rounds = state.qbank.rounds || {};
+  const cards = Object.keys(rounds)
+    .sort()
+    .map((rk) => {
+      const b = rounds[rk];
+      const total = b.sets.reduce((a, s) => a + s.items.length, 0);
+      return `<div class="card ${ROUND_COLORS[rk]}" data-action="bankround" data-round="${rk}" tabindex="0" role="button">
+        <div class="icon">📚</div>
+        <div class="kicker">ROUND ${rk} · ${esc(b.topic)}</div>
+        <div class="ttl">${esc(b.title)}</div>
+        <div class="desc">${total} soalan &amp; jawapan</div>
+      </div>`;
+    })
+    .join("");
+  render(`
+    <div class="page-head">
+      <div class="eyebrow">Bacaan akhir</div>
+      <h1>Bank Soalan</h1>
+      <p>Baca setiap soalan bersama jawapannya. Pilih round untuk mula membaca.</p>
+    </div>
+    <div class="grid">${cards}</div>
+  `);
+}
+
+function startBank(round) {
+  const b = state.qbank.rounds[round];
+  let items = [];
+  b.sets.forEach((s) => {
+    s.items.forEach((it) => items.push(Object.assign({ set: s.set }, it)));
+  });
+  state.bank = { round, items, idx: 0, topic: b.topic };
+  renderBankCard();
+}
+
+function renderBankCard() {
+  const bk = state.bank;
+  const it = bk.items[bk.idx];
+  const total = bk.items.length;
+  const pct = Math.round(((bk.idx + 1) / total) * 100);
+
+  const typeLabel = { mcq: "Aneka Pilihan", tf: "Betul/Salah", match: "Padanan", open: "Struktur" }[it.type] || it.type;
+  const optsHtml =
+    it.type === "mcq" && it.options
+      ? `<div class="bank-opts">${it.options
+          .map((o) => {
+            const isAns = it.a && o.slice(0, 2) === it.a.slice(0, 2);
+            return `<div class="bank-opt ${isAns ? "correct" : ""}">${esc(o)}${isAns ? ' <span class="tick">✓</span>' : ""}</div>`;
+          })
+          .join("")}</div>`
+      : "";
+
+  render(`
+    <button class="back" data-action="bank">← Semua round</button>
+    <div class="runner-top">
+      <span class="meta">Round ${bk.round} · ${esc(bk.topic)} · ${bk.idx + 1}/${total}</span>
+      <span class="meta">Set ${it.set}</span>
+    </div>
+    <div class="progress-wrap"><div class="progress-bar" style="width:${pct}%"></div></div>
+    <div class="qcard">
+      <div class="qtags">
+        <span class="badge type">${esc(typeLabel)}</span>
+        ${it.section ? `<span class="badge tag">${esc(it.section.replace(/^Section [A-C]:\s*/, ""))}</span>` : ""}
+      </div>
+      <div class="qprompt">${esc(it.q)}</div>
+      ${optsHtml}
+      <div class="bank-answer">
+        <div class="bank-answer-lbl">Jawapan</div>
+        <div class="bank-answer-text">${it.a ? esc(it.a) : "Rujuk nota buku sumber untuk jawapan penuh."}</div>
+      </div>
+      <div class="runner-actions">
+        <button class="btn ghost" id="prevBtn" ${bk.idx === 0 ? "disabled" : ""}>← Sebelum</button>
+        <div class="spacer"></div>
+        <button class="btn" id="nextBtn">${bk.idx + 1 < total ? "Soalan seterusnya →" : "Selesai ✓"}</button>
+      </div>
+    </div>
+  `);
+
+  $("#nextBtn").addEventListener("click", () => {
+    if (bk.idx + 1 < total) { bk.idx++; renderBankCard(); }
+    else renderBankPicker();
+  });
+  const prev = $("#prevBtn");
+  if (prev) prev.addEventListener("click", () => { if (bk.idx > 0) { bk.idx--; renderBankCard(); } });
+
+  document.onkeydown = (e) => {
+    if (e.key === "ArrowRight" || e.key === "Enter") $("#nextBtn").click();
+    else if (e.key === "ArrowLeft" && prev && !prev.disabled) prev.click();
+  };
+}
+
 /* ---------- NOTES ---------- */
 function renderNotes() {
   const cards = state.notes.books
@@ -696,7 +810,9 @@ document.addEventListener("click", (e) => {
   switch (a) {
     case "home": setView("home"); break;
     case "quiztab": setView("quiz"); break;
-    case "notes": document.querySelector('.tab[data-view="notes"]').classList.add("active"); renderNotes(); break;
+    case "notes": setActiveTab("notes"); renderNotes(); break;
+    case "bank": setActiveTab("bank"); renderBankPicker(); break;
+    case "bankround": setActiveTab("bank"); startBank(round); break;
     case "round": state.selectedCats = null; renderRoundDetail(round); break;
     case "notebook":
       setActiveTab("notes"); renderNoteBook(round); break;
